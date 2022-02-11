@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>js截取视频第一帧</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    input{
+      margin: 20px;
+    }
+    video{
+      min-width: 400px;
+      min-height: 400px;
+      margin: 0 20px;
+      display: none;
+    }
+    img{
+      min-width: 400px;
+      min-height: 400px;
+      margin: 0 20px 0 0;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <input type="file" id="input" />
+  <br/>
+  <video id="video" src="" controls preload></video>
+  <img id="img" src=''>
+
+  <script>
+    const input = document.getElementById('input')
+    const video = document.getElementById('video')
+    const img = document.getElementById('img')
+    input.addEventListener('change', () => {
+      const file = input.files[0]
+      const videoUrl = URL.createObjectURL(file)
+      video.src = videoUrl
+      video.style.display = 'inline-block'
+    })
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    video.addEventListener('loadeddata', (e) => {
+      const videoWidth = video.offsetWidth
+      const videoHeight = video.offsetHeight
+      canvas.width = videoWidth
+      canvas.height = videoHeight
+      ctx.drawImage(video, 0, 0, videoWidth, videoHeight)
+      const src = canvas.toDataURL('image/jpeg')
+      img.src = src
+      img.style.width = videoWidth
+      img.style.height = videoHeight
+      img.style.display = 'inline-block'
+    })
+  </script>
+</body>
+</html>
